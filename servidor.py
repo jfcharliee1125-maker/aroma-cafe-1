@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import Flask, jsonify, request, session
+from flask import Flask, jsonify, request, session, render_template
 from flask_cors import CORS
 from pymongo import MongoClient
 from bson import ObjectId
@@ -14,6 +14,53 @@ client = MongoClient("mongodb://jfcharliee1125_db_user:bqt3ve2VARr-PjN@ac-fswlmx
 db = client["aroma_cafe"]
 coleccion_pedidos = db["pedidos"]
 coleccion_comentarios = db["comentarios"]
+
+# --- RUTAS DE VISTAS (HTML) ---
+
+@app.route("/")
+def home():
+    return render_template("index.html")
+
+@app.route("/admin")
+def admin():
+    return render_template("admin.html")
+
+@app.route("/menu")
+def menu():
+    return render_template("menu.html")
+
+@app.route("/contacto")
+def contacto():
+    return render_template("contacto.html")
+
+@app.route("/servicios")
+def servicios():
+    return render_template("servicios.html")
+
+@app.route("/galeria")
+def galeria():
+    return render_template("galeria.html")
+
+@app.route("/nosotros")
+def nosotros():
+    return render_template("nosotros.html")
+
+@app.route("/ordenar")
+def ordenar():
+    return render_template("ordenar.html")
+
+@app.route("/delivery")
+def delivery():
+    return render_template("delivery.html")
+
+@app.route("/comprobante")
+def comprobante():
+    return render_template("comprobante.html")
+
+@app.route("/ticket")
+def ticket():
+    return render_template("ticket.html")
+
 
 # --- RUTAS DE PEDIDOS ---
 
@@ -86,7 +133,6 @@ def guardar_comentario():
     if not datos or "comentario" not in datos:
         return jsonify({"error": "No se recibió el comentario"}), 400
 
-    # Valida si hay sesión activa; si no, asigna "usuario desconocido"
     correo_usuario = session.get("user_email", "usuario desconocido")
 
     nuevo_comentario = {
